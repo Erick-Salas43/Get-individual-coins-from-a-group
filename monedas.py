@@ -74,7 +74,6 @@ img = cv2.imread(formato) #Abre la imagen en la variable img.
 img2 = cv2.imread(formato)
 
 if aplicar_escala == 1:
-
 	width = int(img.shape[1]*escala/100)
 	height = int(img.shape[0]*escala/100) 
 	img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
@@ -83,7 +82,6 @@ if aplicar_escala == 1:
 	width1 = int(img.shape[1]*esc/100)
 	height1 = int(img.shape[0]*esc/100) 
 	img2 = cv2.resize(img2, (width1, height1), interpolation = cv2.INTER_AREA) 
-
 
 gaussiano = cv2.GaussianBlur(img,(7, 7), 0) #Aplica filtro gauss a la imagen para suaviazarlo
 gray = cv2.cvtColor(gaussiano,cv2.COLOR_BGR2GRAY) #Lo pasa de RGB a escala de grises
@@ -94,10 +92,6 @@ def nothing(x):
 cv2.namedWindow('Configuracion')
 cv2.resizeWindow('Configuracion', 400, 50)
 cv2.createTrackbar('diam', 'Configuracion',valor_inicial,300,nothing)
-
-
-
-#100,40
 
 def circulos(parametro1):
 	circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, 100, param1=parametro1,param2=parametro1-20,minRadius=0,maxRadius=0)
@@ -126,22 +120,13 @@ elif (eleccion == 'y'):
 	for pt in circles[0, :]: 
 		x, y, r = pt[0], pt[1],pt[2]
 		if aplicar_escala == 1:
-			xaux = int(x*escala*2/100)
-			yaux = int(y*escala*2/100)
-			raux = int(r*escala*2/100)
-			x = x+xaux
-			y = y+yaux
-			r = r+raux
-			d = r*2
-		xa = x-r-8
-		ya = y-r-8
-		d = 2*r
-		h = d+ya+16
-		k = d+xa+16
+			xaux,yaux,raux  = int(x*escala*2/100),int(y*escala*2/100),int(r*escala*2/100)
+			x,y,r,d = x+xaux, y+yaux, r+raux, r*2
+		xa,ya = x-r-8,y-r-8
+		d,h,k = 2*r,d+ya+16,d+xa+16
 		df = img2[ya:h, xa:k]
 		pq = pq + 1
 		apu = str(ax)+'a'+str(pq)+'.jpg'
 		print(apu)
 		cv2.imwrite(apu,df)
 cv2.waitKey(0)
-
